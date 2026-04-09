@@ -66,6 +66,18 @@ class KlantController extends Controller
     }
 
     /**
+     * Verwijder een klant uit de database.
+     */
+    public function destroy(Klant $klant): RedirectResponse
+    {
+        $klant->delete();
+
+        return redirect()
+            ->route('klant.index')
+            ->with('success', 'Klant is succesvol verwijderd.');
+    }
+
+    /**
      * Validatieregels voor klant formulieren.
      */
     private function rules(?int $klantId = null): array
