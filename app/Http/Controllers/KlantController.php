@@ -44,6 +44,28 @@ class KlantController extends Controller
     }
 
     /**
+     * Toon het formulier om een bestaande klant te wijzigen.
+     */
+    public function edit(Klant $klant): View
+    {
+        return view('klant.edit', compact('klant'));
+    }
+
+    /**
+     * Sla de gewijzigde klantgegevens op.
+     */
+    public function update(Request $request, Klant $klant): RedirectResponse
+    {
+        $validated = $request->validate($this->rules($klant->klant_id), $this->messages());
+
+        $klant->update($validated);
+
+        return redirect()
+            ->route('klant.index')
+            ->with('success', 'Klant is succesvol gewijzigd.');
+    }
+
+    /**
      * Validatieregels voor klant formulieren.
      */
     private function rules(?int $klantId = null): array
