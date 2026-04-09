@@ -7,8 +7,28 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
+
+            {{-- Succesmelding --}}
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            {{-- Foutmelding bijv. actieve klant verwijderen --}}
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="mb-4">
+                        <a href="{{ route('klant.create') }}" class="btn btn-primary">
+                            Klant toevoegen
+                        </a>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
