@@ -57,7 +57,8 @@ class KlantController extends Controller
             'aantal_volwassenen' => ['required', 'integer', 'min:0'],
             'aantal_kinderen'    => ['required', 'integer', 'min:0'],
             'aantal_babys'       => ['required', 'integer', 'min:0'],
-            'IsActief'           => ['boolean'],
+            // New clients must be active (accepted = 1/true); on update allow any boolean
+            'IsActief'           => $klantId === null ? ['accepted'] : ['boolean'],
             'Opmerking'          => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -79,6 +80,7 @@ class KlantController extends Controller
             'aantal_volwassenen.required'  => 'Aantal volwassenen is verplicht.',
             'aantal_kinderen.required'     => 'Aantal kinderen is verplicht.',
             'aantal_babys.required'        => 'Aantal babys is verplicht.',
+            'IsActief.accepted'            => 'Klant moet actief zijn.',
         ];
     }
 }
