@@ -75,6 +75,7 @@ class KlantController extends Controller
             'adres'              => ['required', 'string', 'max:150'],
             'postcode'           => ['required', 'string', 'max:10'],
             'telefoonnummer'     => ['required', 'regex:/^[0-9]+$/', 'max:15'],
+            // Unique email, but exclude the current klant on update
             'email'              => ['required', 'email', 'max:100', 'unique:Klant,email,' . ($klantId ?? 'NULL') . ',klant_id'],
             'aantal_volwassenen' => ['required', 'integer', 'min:0'],
             'aantal_kinderen'    => ['required', 'integer', 'min:0'],
