@@ -67,9 +67,17 @@ class KlantController extends Controller
 
     /**
      * Verwijder een klant uit de database.
+     * Actieve klanten kunnen niet worden verwijderd.
      */
     public function destroy(Klant $klant): RedirectResponse
     {
+        // Actieve klanten kunnen niet worden verwijderd
+        if ($klant->IsActief) {
+            return redirect()
+                ->route('klant.index')
+                ->with('error', 'Actieve klanten kunnen niet worden verwijderd.');
+        }
+
         $klant->delete();
 
         return redirect()
