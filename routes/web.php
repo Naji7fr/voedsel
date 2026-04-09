@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/klant', [KlantController::class, 'store'])->name('klant.store');
     Route::get('/klant/{klant}/edit', [KlantController::class, 'edit'])->name('klant.edit');
     Route::put('/klant/{klant}', [KlantController::class, 'update'])->name('klant.update');
+    Route::delete('/klant/{klant}', [KlantController::class, 'destroy'])->name('klant.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
