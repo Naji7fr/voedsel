@@ -34,21 +34,51 @@ class KlantController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate($this->rules(), $this->messages());
+
+        Klant::query()->create($validated);
+
+        return redirect()
+            ->route('klant.index')
+            ->with('success', 'Klant is succesvol toegevoegd.');
+    }
+
+    /**
+     * Validatieregels voor klant formulieren.
+     */
+    private function rules(?int $klantId = null): array
+    {
+        return [
             'gezinsnaam'         => ['required', 'string', 'max:100'],
             'adres'              => ['required', 'string', 'max:150'],
             'postcode'           => ['required', 'string', 'max:10'],
-            'telefoonnummer'     => ['required', 'max:15'],
-            'email'              => ['required', 'email', 'max:100', 'unique:Klant,email'],
+            'telefoonnummer'     => ['required', 'regex:/^[0-9]+$/', 'max:15'],
+            'email'              => ['required', 'email', 'max:100', 'unique:Klant,email,' . ($klantId ?? 'NULL') . ',klant_id'],
             'aantal_volwassenen' => ['required', 'integer', 'min:0'],
             'aantal_kinderen'    => ['required', 'integer', 'min:0'],
             'aantal_babys'       => ['required', 'integer', 'min:0'],
             'IsActief'           => ['boolean'],
             'Opmerking'          => ['nullable', 'string', 'max:255'],
-        ]);
+        ];
+    }
 
-        Klant::query()->create($request->all());
-
-        return redirect()->route('klant.index');
+    /**
+     * Nederlandse foutmeldingen voor validatie.
+     */
+    private function messages(): array
+    {
+        return [
+            'gezinsnaam.required'          => 'Gezinsnaam is verplicht.',
+            'adres.required'               => 'Adres is verplicht.',
+            'postcode.required'            => 'Postcode is verplicht.',
+            'telefoonnummer.required'      => 'Telefoonnummer is verplicht.',
+            'telefoonnummer.regex'         => 'Ongeldig telefoonnummer. Alleen cijfers zijn toegestaan.',
+            'email.required'               => 'E-mailadres is verplicht.',
+            'email.email'                  => 'Voer een geldig e-mailadres in.',
+            'email.unique'                 => 'Dit e-mailadres bestaat al.',
+            'aantal_volwassenen.required'  => 'Aantal volwassenen is verplicht.',
+            'aantal_kinderen.required'     => 'Aantal kinderen is verplicht.',
+            'aantal_babys.required'        => 'Aantal babys is verplicht.',
+        ];
     }
 }
