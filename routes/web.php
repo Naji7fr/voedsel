@@ -16,6 +16,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/klant', [KlantController::class, 'index'])->name('klant.index');
     Route::get('/klant/create', [KlantController::class, 'create'])->name('klant.create');
     Route::post('/klant', [KlantController::class, 'store'])->name('klant.store');
+    Route::get('/klant/{klant}/edit', [KlantController::class, 'edit'])->name('klant.edit');
+    Route::put('/klant/{klant}', [KlantController::class, 'update'])->name('klant.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
