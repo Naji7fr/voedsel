@@ -46,8 +46,14 @@ class KlantSeeder extends Seeder
             $adres = $row['adres'];
             unset($row['adres']);
 
-            $klant = Klant::create($row);
-            $klant->adressen()->create($adres);
+            $klant = Klant::firstOrCreate(
+                ['email' => $row['email']],
+                $row
+            );
+
+            if ($klant->adressen()->doesntExist()) {
+                $klant->adressen()->create($adres);
+            }
         }
     }
 }
